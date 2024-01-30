@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+home
+{% endblock %}
+
+{% block content %}
+{{message}}
+<h1>this is the home page</h1>
+
+{% if posts %}
+<h2>here are your posts</h2>
+<div class="post-container">
+    {% for post in posts %}
+        <div class="post">
+            id: {{post.id}} 
+            <br>
+            {{post.text|safe}} 
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if not posts %}
+<h2>you have no posts</h2>
+{% endif %}
+
+{% endblock %}

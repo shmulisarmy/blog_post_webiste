@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<div class="post">
+    <h2>author: {{post.author|safe}}</h2>
+    <br>
+    {{post.text|safe}} 
+</div>
+{% endblock %}
