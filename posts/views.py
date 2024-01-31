@@ -29,6 +29,15 @@ def homepage(request):
     else:
         return redirect(reverse('log in'))
     
+def view_profile(request, username):
+    logged = request.session.get('logged')
+    if not logged:
+        return redirect(reverse('log in'))
+    posts = models.Post.objects.filter(author=username)  
+    return render(request, 'view_profile.html', {'posts': posts, 'name': username})
+    
+    
+
 def view_post(request, post_id):
     logged = request.session.get('logged')
     if request.method == 'POST':
