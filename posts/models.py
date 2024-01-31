@@ -9,3 +9,11 @@ class Post(models.Model):
     def __str__(self):
         return f"id: {self.id}, author: {self.author}, text  {self.text},"
 
+class Comment(models.Model):
+    author = models.CharField(max_length=30)
+    content = models.CharField(max_length=100)
+    on_post = models.IntegerField()
+
+    def __str__(self):
+        on_post = Post.objects.filter(id=self.on_post).first()
+        return f"author: {self.author}, content: {self.content} on_post: {on_post}"

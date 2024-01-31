@@ -1,9 +1,29 @@
 {% extends 'base.html' %}
 
+
+{% block more_style %}
+
+.comment{
+    border: 1px solid black;
+    transform: scaleX(.5);
+}
+
+{% endblock %}
+
+
+
 {% block content%}
 <div class="post">
     <h2>author: {{post.author|safe}}</h2>
     <br>
     {{post.text|safe}} 
 </div>
+
+{% for comment in comments %}
+<div class="comment">
+    <p>{{comment.author|safe}}</p>
+    <p>{{comment.content|safe}}</p>
+</div>
+{% endfor %}
+
 {% endblock %}

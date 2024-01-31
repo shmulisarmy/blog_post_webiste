@@ -31,4 +31,5 @@ def homepage(request):
     
 def view_post(request, post_id):
     post =  models.Post.objects.filter(id=post_id).first()
-    return render(request, 'view_post.html', {'post': post})
+    comments = models.Comment.objects.filter(on_post=post_id)
+    return render(request, 'view_post.html', {'post': post, 'comments': comments})
