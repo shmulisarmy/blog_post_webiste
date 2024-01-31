@@ -30,6 +30,17 @@ def homepage(request):
         return redirect(reverse('log in'))
     
 def view_post(request, post_id):
+    logged = request.session.get('logged')
+    if request.method == 'POST':
+        form = forms.make_comment(request.POST)
+        if not form.is_valid():
+            return render(request, 'login.html', {'form': make_post(), 
+                                                  'message': 'form is not valid'})
+        text = request.POST.get('text')
+        new_comment = models.Comment(author=logged, content=text, on_post=post_id)
+        new_comment.save()
+       
+    form = forms.make_comment()
     post =  models.Post.objects.filter(id=post_id).first()
     comments = models.Comment.objects.filter(on_post=post_id)
-    return render(request, 'view_post.html', {'post': post, 'comments': comments})
+    return render(request, 'view_post.html', {'post': post, 'comments': comments, 'form': form})
