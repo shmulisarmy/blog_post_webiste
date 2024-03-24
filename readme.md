@@ -13,17 +13,4 @@ python3 main.py
 
 ```
 
-### file structure
 
-.
-├── data.py
-├── filestructure.txt
-├── frontend
-├── main.py
-├── readme.md
-├── static
-│   └── main.css
-└── templates
-    └── main.html
-
-4 directories, 6 files
