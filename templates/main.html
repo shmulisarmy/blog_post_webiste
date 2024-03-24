@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script type="text/babel" src="main.jsx"></script>
+<title>blog post</title>
+</head>
+<body>
+<header>
+<img src="https://media.istockphoto.com/id/1459952195/photo/beautiful-spring-garden-with-flowers-and-lawn-grass-3d-illustration.webp?b=1&s=170667a&w=0&k=20&c=_OIwJ7CMxAFqLgpvR4J4xFxiVLTpu01b-VCw6OmF8cg=" alt="">
+<link rel="stylesheet" href="static/main.css">
+</header>
+
+
+<nav>
+<button onclick="toggle_sidebar()">toggle side bar</button>
+<p>login</p>
+<p>signup</p>
+<div class="drop-down">
+<button onclick="drop_down()">drop down</button>
+<p class="invisible">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia ipsa, rem qui facere perferendis recusandae praesentium fuga corporis voluptatem dolorum veritatis, debitis repudiandae possimus corrupti, dolorem ut iusto! Quisquam at laborum tempore quo labore laudantium natus tempora? Id nemo natus quaerat molestiae error, harum similique corporis maiores placeat omnis amet. Nulla odit incidunt tempore vero quae accusamus deleniti quasi possimus explicabo necessitatibus? A ducimus veritatis excepturi at aliquam nesciunt dolor esse repellendus sequi nostrum, exercitationem, quas, deleniti pariatur provident voluptas ullam ea quae explicabo quasi unde! Quas dolores saepe iusto deleniti ipsum atque, consequuntur pariatur minus sed, quia temporibus ipsam veniam. Alias expedita esse itaque tempore corporis corrupti nihil libero quis eos at. Maiores error nemo beatae eveniet illo debitis expedita dicta rem doloremque, facilis sint enim sapiente, explicabo, architecto nesciunt consectetur assumenda eos ullam commodi nihil corrupti aspernatur fugiat consequuntur sed. Laborum similique voluptate sequi beatae? Ipsam, doloremque aperiam debitis neque quisquam, doloribus cupiditate accusantium accusamus pariatur, libero explicabo iusto. Optio quia fugiat voluptates, laudantium maxime, soluta ab commodi doloribus aliquid quis aperiam perspiciatis! Autem cum, ad voluptatum soluta harum obcaecati, excepturi non porro dolorum, provident quos culpa libero nam dicta pariatur? Veritatis excepturi voluptates voluptatibus error? Ea, harum!</p>
+</div>
+</nav>
+
+<div class="stuff">
+
+
+<div id="side_bar">
+<ol>
+<li>1</li>
+<li>2</li>
+<li>3</li>
+<li>4</li>
+<li>5</li>
+<li>6</li>
+<li>7</li>
+<li>8</li>
+</ol>
+</div>
+
+
+<div class="wrapper">
+
+
+<main>
+
+{% for post in posts %}
+<div class="image">
+    <img src="{{post.imageUrl}}" alt="">
+    </div>
+    <div class="text">
+    <h1>{{post.author}} - {{post.title}}</h1>
+    <p>{{post.quickText}}</p>
+</div>
+{% endfor %}
+
+<button onclick="document.body.classList.toggle('night-mode')">Switch to Night Mode</button>
+
+
+</main>
+
+
+</div>
+
+</div>
+
+<script>
+function toggle_sidebar(){
+document.querySelector('#side_bar').classList.toggle('hidden');
+}
+
+function drop_down(){
+document.querySelector(".drop-down").querySelector("p").classList.toggle("invisible")
+}
+
+</script>
+</body>
+</html>
+
+
+
