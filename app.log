@@ -1,0 +1,6 @@
+INFO:root:server started
+DEBUG:root:server started
+WARNING:root:server started
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 135-470-760
+INFO:werkzeug: * Detected change in '/Users/Shmuli/temp/blogs/main.py', reloading

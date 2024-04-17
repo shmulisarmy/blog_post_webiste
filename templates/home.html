@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+
+{% block style %}
+    <style>
+        body{
+            background-color: rgb(236, 227, 227);
+
+        }
+        main {
+                    margin: 8%;
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                    grid-gap: 20px;
+                    
+                }
+
+        .blog {
+            border: 1px solid black;
+            padding: 5%;
+            margin: var(--indent-size);
+            border-radius: 4px;
+            background-color: white;
+
+        }
+        header {
+            height: calc(20vw + 100px);
+        }
+        header .image {
+            width: 100%;
+            height: 100%;
+        }
+        img{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<header>
+    <div class="image">
+        <img src="https://images.unsplash.com/photo-1593642634367-d91a135587b5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="">
+    </div>
+    <div class="nameAndBio">
+        <h1>{{username}}</h1>
+        <p>{{bio}}</p>
+    </div>
+</header>
+
+
+<main>
+    {% for blog in blogs %}
+    <div class="blog">
+        <div class="image">
+            <img width="300" height="20000" src="https://images.unsplash.com/photo-1593642634367-d91a135587b5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="">
+        </div>
+        <h1>{{ blog[0] }}</h1>
+        <h3>{{ blog[1] }}</h3>
+        <button onclick="goToBlog({{ blog[2] }})">Read More</button>
+    </div>
+    {% endfor %}
+</main>
+
+
+<script>
+    function goToBlog(index) {
+        window.location.href = '/'+index
+    }
+</script>
+
+{% endblock %}

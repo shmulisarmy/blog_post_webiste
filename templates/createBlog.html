@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+
+{% block style %}
+    <style>
+        form {
+            border: 1px solid black;
+            padding: var(--indent-size);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+<script>
+function saveToLocalStorage() {
+    localStorage.setItem('title', document.getElementById('title').value);
+    localStorage.setItem('summary', document.getElementById('summary').value);
+    localStorage.setItem('body', document.getElementById('body').value);
+}
+</script>
+<form action="/createBlog" method="post">
+    <br>
+    
+    <label for="title">title</label>
+    <input id="title" type="text" name="title">
+    <br>
+    <label for="summary">summary</label>
+    <input id="summary" type="text" name="summary">
+    <br>
+    
+    <textarea id="body" name="body" cols="50" rows="10"></textarea>
+    <br>
+    <button type="submit">Submit</button>
+</form>
+<button onclick="saveToLocalStorage()">save as draft</button>
+
+
+<script src="https://cdn.quilljs.com/1.3.6/quill.js">
+    var quill = new Quill('#editor', {
+  theme: 'snow',
+  modules: {
+    toolbar: [
+      [{ 'header': [1, 2, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      ['blockquote', 'code-block'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'align': [] }]
+    ]
+  }
+});
+
+function restoreFromLocalStorage() {
+    document.getElementById('title').value = localStorage.getItem('title') || '';
+    document.getElementById('summary').value = localStorage.getItem('summary') || '';
+    document.getElementById('body').value = localStorage.getItem('body') || '';
+}
+
+restoreFromLocalStorage();
+console.log(localStorage.getItem('title'));
+
+</script>
+
+
+
+
+{% endblock %}

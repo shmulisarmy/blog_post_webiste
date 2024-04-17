@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <style>
+        form {
+            border: 1px solid black;
+            padding: var(--indent-size);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<form action="/signup" method="post">
+    <label for="name">username</label>
+    <input type="text" name="username">
+    <br>
+    <label for="password">password</label>
+    <input type="password" name="password">
+    <br>
+    <button type="submit">signup</button>
+</form>
+{% endblock %}

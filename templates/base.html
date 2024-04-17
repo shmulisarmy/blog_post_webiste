@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+    <style>
+    :root{
+        --indent-size: 8%;
+    }
+        body{
+            margin: 0%;
+        }
+        nav{
+                    background-color: black;
+                    color: white;
+                    display: flex;
+                    justify-content: space-evenly;
+                    position: sticky;
+                    top: 0%;
+                }
+
+                a{
+                    color: white;
+                    text-decoration: none;
+                    padding-top: 16px;
+                    
+                }
+                button{
+                    background-color: lightgreen;
+                    border-radius: 10px;
+                }
+
+                button:hover{
+                    cursor: pointer;
+                }
+    </style>
+    {% block style %}
+        content
+    {% endblock %}
+</head>
+<body>
+    <nav>
+        <a href="home">home</a>
+        <a href="createBlog">create blog</a>
+        <a href="signup">signup</a>
+        <a href="login">login</a>
+    </nav>
+    {% if message %}
+        <h1 style="color:red">{{message}}</h1>
+    {% endif %}
+    {% block content %}
+    {% endblock %}
+    
+</body>
+</html>
