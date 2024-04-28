@@ -10,6 +10,21 @@ def getAllPosts():
     return posts
 
 
+def returnsTitleToIdDictOfAllPosts():
+    """"used for loading into search tree"""
+    conn = sqlite3.connect('test.db')
+    c = conn.cursor()
+    c.execute("SELECT title, id FROM posts")
+    posts = c.fetchall()
+    print(f"{posts = }")
+    conn.close()
+    TitleToIdDictOfAllPosts = {post[0]: post[1] for post in posts}
+    return TitleToIdDictOfAllPosts
+
+
+TitleToIdDictOfAllPosts: dict = returnsTitleToIdDictOfAllPosts()
+
+
 def createPost(title, summary, body, authorId):
     conn = sqlite3.connect('test.db')
     c = conn.cursor()

@@ -5,11 +5,11 @@ from colors import red, green
 
 from dbInteractions.posts import createPost, getPostById, getAllPosts, getPostByUserId
 from dbInteractions.users import createUser, idAndBioIfCorrectPassword
+from search.load import postTitleToIdTree
 
 app = Flask(__name__)
 app.secret_key = b'\x1b\x7f\x0b\xca\x1c\x9d\xa9\xbd\x8a\x1f\x9b\x1b\xcb\x1c\x9d\xa9\xbd\x8a\x1f\x9b'
 
-print(green("main.html, line 10: app = Flask(__name__)"))
 @app.route("/test", methods=['GET', 'POST'])
 def test():
     if request.method == 'GET':
@@ -139,5 +139,18 @@ def myPosts():
 
 
 
+"""htmx search"""
+@app.route('/searchResults', methods=['GET', 'POST'])
+def searchResults():
+    if __debug__:
+        print(f"tree = {list(filter(lambda x: callable(x), dir(postTitleToIdTree)))} {dir(postTitleToIdTree) = }")
+        print(f"{postTitleToIdTree = }")
+    searchLetters = request.form.get('searchLetters')
+    print(f"{searchLetters = }")
+    # searchResults = postTitleToIdTree.firstNThatStartWith(searchLetters, 5)
+    searchResults = postTitleToIdTree.valueSearch(3, searchLetters)
+    if searchResults:
+        return render_template('searchResults.html', searchResults=searchResults)
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=4040)

@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://unpkg.com/htmx.org@1.7.0/dist/htmx.min.js"></script>
+    
 
     <title>
         {% block title %}
@@ -15,14 +17,17 @@
         body{
             margin: 0%;
         }
+
         nav{
+            z-index: 1;
+            position: sticky;
+            top: 0%;
                     background-color: black;
                     color: white;
                     display: flex;
                     justify-content: space-evenly;
-                    position: sticky;
-                    top: 0%;
                 }
+
 
                 a{
                     color: white;
@@ -38,23 +43,74 @@
                 button:hover{
                     cursor: pointer;
                 }
+                r{
+                    cursor: pointer;
+                }
+                #results{
+                    position: relative;
+                    margin-right: 40%;
+                    margin-left: 40%;
+                    border: 1px solid black;
+                    text-align: center;
+                    background-color: white;
+                    color: black;
+                    padding-top: 10px;
+
+                
+                }
+                .x
+                {
+                    background-color: red;
+                }
+                #results .x{
+                    position: absolute;
+                    top: 0%;
+                    left: 0%;
+                }
+                #results{
+                    display: none;
+                }
+                #search:hover #results{
+                    display: block;
+                }
+   
     </style>
     {% block style %}
         content
     {% endblock %}
 </head>
 <body>
-    <nav>
-        <a href="home">home</a>
-        <a href="createBlog">create blog</a>
-        <a href="signup">signup</a>
-        <a href="login">login</a>
-    </nav>
+    
+        <nav>
+            <a href="home">home</a>
+            <a href="createBlog">create blog</a>
+            
+            <a href="signup">signup</a>
+            <a href="login">login</a>
+        </nav>
+
+    {% block header %}
+    {% endblock %}
+
+
+    <center>
+    <div id="search">
+            <input type="text" name="searchLetters" hx-post="/searchResults" hx-target="#results" hx-trigger="keyup changed delay:500ms">
+            <div id="results"></div>
+        </div>
+    </center>
+
+
     {% if message %}
         <h1 style="color:red">{{message}}</h1>
     {% endif %}
     {% block content %}
     {% endblock %}
+    <script>
+        function goToBlog(index) {
+            window.location.href = '/'+index
+        }
+    </script>
     
 </body>
 </html>
