@@ -1,116 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://unpkg.com/htmx.org@1.7.0/dist/htmx.min.js"></script>
-    
+    <script src="https://unpkg.com/htmx.org@1.7.0/dist/htmx.min.js"></script>
+
 
     <title>
         {% block title %}
         {% endblock %}
     </title>
     <style>
-    :root{
-        --indent-size: 8%;
-    }
-        body{
+        :root {
+            --indent-size: 8%;
+        }
+
+        body {
             margin: 0%;
         }
 
-        nav{
+        nav {
             z-index: 1;
             position: sticky;
             top: 0%;
-                    background-color: black;
-                    color: white;
-                    display: flex;
-                    justify-content: space-evenly;
-                }
+            background-color: black;
+            color: white;
+            display: flex;
+            justify-content: space-evenly;
+        }
 
 
-                a{
-                    color: white;
-                    text-decoration: none;
-                    padding-top: 16px;
-                    
-                }
-                button{
-                    background-color: lightgreen;
-                    border-radius: 10px;
-                }
+        a {
+            color: white;
+            text-decoration: none;
+            padding-top: 16px;
 
-                button:hover{
-                    cursor: pointer;
-                }
-                r{
-                    cursor: pointer;
-                }
-                #results{
-                    position: relative;
-                    margin-right: 40%;
-                    margin-left: 40%;
-                    border: 1px solid black;
-                    text-align: center;
-                    background-color: white;
-                    color: black;
-                    padding-top: 10px;
+        }
 
+        button {
+            background-color: lightgreen;
+            border-radius: 10px;
+        }
+
+        button:hover {
+            cursor: pointer;
+        }
+
+        r {
+            cursor: pointer;
+        }
+
+        @keyframes appear {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+                display: block;
+            }
+
+        }
+        @keyframes disappear {
+            99% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            100% {
                 
-                }
-                .x
-                {
-                    background-color: red;
-                }
-                #results .x{
-                    position: absolute;
-                    top: 0%;
-                    left: 0%;
-                }
-                #results{
-                    display: none;
-                }
-                #search:hover #results{
-                    display: block;
-                }
-   
+                display: none;
+            }
+
+        }
+
+        #results {
+            position: relative;
+            margin-right: 40%;
+            margin-left: 40%;
+            border: 1px solid black;
+            text-align: center;
+            background-color: white;
+            color: black;
+            animation: appear 2s;
+
+
+        }
+
+        .x {
+            background-color: red;
+        }
+
+        #results .x {
+            position: absolute;
+            top: 0%;
+            left: 0%;
+        }
+
+        #results {
+            animation: disappear 2s forwards;            
+        }
+
+        #search:hover #results {
+            animation: appear 1s forwards;            
+
+        }
+        #results p:hover {
+            background-color: lightblue;
+            cursor: pointer;
+        }
     </style>
     {% block style %}
-        content
+    content
     {% endblock %}
 </head>
+
 <body>
-    
-        <nav>
-            <a href="home">home</a>
-            <a href="createBlog">create blog</a>
-            
-            <a href="signup">signup</a>
-            <a href="login">login</a>
-        </nav>
+
+    <nav>
+        <a href="home">home</a>
+        <a href="createBlog">create blog</a>
+
+        <a href="signup">signup</a>
+        <a href="login">login</a>
+    </nav>
 
     {% block header %}
     {% endblock %}
 
 
     <center>
-    <div id="search">
-            <input type="text" name="searchLetters" hx-post="/searchResults" hx-target="#results" hx-trigger="keyup changed delay:500ms">
-            <div id="results"></div>
+        <div id="search">
+            <input type="text" name="searchLetters" hx-post="/searchResults" hx-target="#results"
+                hx-trigger="keyup changed delay:500ms">
+            <div id="results">
+                <p>your search results here...</p>
+            </div>
         </div>
     </center>
 
 
     {% if message %}
-        <h1 style="color:red">{{message}}</h1>
+    <h1 style="color:red">{{message}}</h1>
     {% endif %}
     {% block content %}
     {% endblock %}
     <script>
         function goToBlog(index) {
-            window.location.href = '/'+index
+            window.location.href = '/' + index
         }
     </script>
-    
+
 </body>
+
 </html>
