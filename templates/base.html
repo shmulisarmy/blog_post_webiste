@@ -59,13 +59,15 @@
             }
 
         }
+
         @keyframes disappear {
             99% {
                 transform: scale(0);
                 opacity: 0;
             }
+
             100% {
-                
+
                 display: none;
             }
 
@@ -95,13 +97,14 @@
         }
 
         #results {
-            animation: disappear 2s forwards;            
+            animation: disappear 2s forwards;
         }
 
         #search:hover #results {
-            animation: appear 1s forwards;            
+            animation: appear 1s forwards;
 
         }
+
         #results p:hover {
             background-color: lightblue;
             cursor: pointer;
@@ -129,7 +132,8 @@
     <center>
         <div id="search">
             <input type="text" name="searchLetters" hx-post="/searchResults" hx-target="#results"
-                hx-trigger="keyup changed delay:500ms">
+                hx-trigger="keyup changed throttle:500ms"
+                hx-indicator=".htmx-indicator">
             <div id="results">
                 <p>your search results here...</p>
             </div>
@@ -158,14 +162,14 @@
             render() {
                 const id = this.getAttribute('data-id');
                 const title = this.textContent
-                if (isNaN(parseInt(id))){
+                if (isNaN(parseInt(id))) {
                     this.innerHTML = `if you see this it means its a bug`;
                     return;
                 }
                 this.innerHTML = `
                     <p onclick="goToBlog(${id})">${title}</p>
                 `;
-                }
+            }
         }
 
         customElements.define('c-c', Cc);        

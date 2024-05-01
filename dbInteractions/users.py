@@ -69,3 +69,14 @@ def getAllFollowing(userId) -> list[int]:
     following = c.fetchall()
     conn.close()
     return following
+
+def allUsers() -> dict[str, int]:
+    conn = sqlite3.connect('test.db')
+    c = conn.cursor()
+    c.execute("SELECT username, id FROM users")
+    users = c.fetchall()
+    conn.close()
+    return dict(users)
+
+usernameToIdDictOfAllUsers = allUsers()
+print(f"{usernameToIdDictOfAllUsers = }")
