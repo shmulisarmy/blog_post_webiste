@@ -3,8 +3,9 @@ from flask import Flask, render_template, request, redirect, url_for, send_file,
 from website.utils import generateSalt, hash, isCommonPassword
 from colors import red, green
 
-from dbInteractions.posts import createPost, getPostById, getAllPosts, getPostsByUserId, getPostsByUserId
+from dbInteractions.posts import createPost, getPostById, getAllPosts, getPostsByUserId, getPostsByUserId, getPostsByIds
 from dbInteractions.users import createUser, idAndBioIfCorrectPassword, followUser, unfollowUser, getAllFollowers, getAllFollowing, getSalt, usernameExists
+from dbInteractions.likes import likeAPost, unlikeAPost, getAllLikedByUser, getAllUsersThatLikedPost
 from search.load import postTitleToIdTree
 
 app = Flask(__name__)
@@ -217,6 +218,45 @@ def following():
     following = getAllFollowing(user_id)
     return render_template('following.html', following=following)
 
+
+
+
+
+@app.route('/likePost', methods=['POST'])
+def likePost():
+    user_id = session.get('id')
+    post_id = request.form.get('post_id')
+    if user_id and post_id:
+        likeAPost(user_id, post_id)
+
+    return "success"
+
+
+@app.route('/unlikePost', methods=['POST'])
+def unlikePost():
+    user_id = session.get('id')
+    post_id = request.form.get('post_id')
+    if not (user_id and post_id):
+        return "failed"
+    unlikeAPost(user_id, post_id)
+    return "success"
+
+
+@app.route('/likedByUser', methods=['GET'])
+def likedByUser():
+    user_id = session.get('id')
+    if not user_id:
+        return "failed"
+    liked_by_user = getAllLikedByUser(user_id)
+    return getPostsByIds(liked_by_user)
+    # return render_template('likedByUser.html', liked_by_user=liked_by_user)
+
+
+@app.route('/usersLikedPost/<int:post_id>', methods=['GET'])
+def usersLikedPost(post_id):
+    users_liked_post = getAllUsersThatLikedPost(post_id)
+    return users_liked_post
+    # return render_template('usersLikedPost.html', users_liked_post=users_liked_post)
 
 
 
