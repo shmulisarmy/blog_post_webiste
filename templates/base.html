@@ -142,10 +142,29 @@
     {% endif %}
     {% block content %}
     {% endblock %}
+
     <script>
         function goToBlog(index) {
             window.location.href = '/' + index
         }
+
+
+        class Cc extends HTMLElement {
+            constructor() {
+                super();
+                this.render();
+
+            }
+            render() {
+                const id = this.getAttribute('data-id');
+                const title = this.textContent
+                this.innerHTML = `
+                    <p onclick="goToBlog(${id})">${title}</p>
+                `;
+                }
+        }
+
+        customElements.define('c-c', Cc);
     </script>
 
 </body>
