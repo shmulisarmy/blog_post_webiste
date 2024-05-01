@@ -1,0 +1,2 @@
+when selecting in order to show many at a time use "select title, summary, id FROM posts from posts where...."
+when selecting in order to show one at a time use "title, summary, body from posts where...."
