@@ -4,7 +4,7 @@ from website.utils import generateSalt, hash, isCommonPassword
 from colors import red, green
 
 from dbInteractions.posts import createPost, getPostById, getAllPosts, getPostByUserId
-from dbInteractions.users import createUser, idAndBioIfCorrectPassword
+from dbInteractions.users import createUser, idAndBioIfCorrectPassword, followUser, unfollowUser, getAllFollowers, getAllFollowing
 from search.load import postTitleToIdTree
 
 app = Flask(__name__)
@@ -152,6 +152,10 @@ def searchResults():
     if searchResults:
         return render_template('searchResults.html', searchResults=searchResults)
 
+
+
+
+
 @app.route('/follow', methods=['POST'])
 def follow():
     user_id = session.get('id')
@@ -161,6 +165,36 @@ def follow():
         followUser(user_id, follow_id)
 
     return "success"
+
+@app.route('/unfollow', methods=['POST'])
+def unfollow():
+    user_id = session.get('id')
+    follow_id = request.form.get('unfollow_id')
+    if not (user_id and follow_id):
+        return "failed"
+    unfollowUser(user_id, follow_id)
+    return "success"
+
+
+@app.route('/followers', methods=['POST'])
+def followers():
+    user_id = session.get('id')
+    if not user_id:
+        return "failed"
+    followers = getAllFollowers(user_id)
+    return render_template('followers.html', followers=followers)
+
+
+@app.route('/following', methods=['POST'])
+def following():
+    user_id = session.get('id')
+    if not user_id:
+        return "failed"
+    following = getAllFollowing(user_id)
+    return render_template('following.html', following=following)
+
+
+
 
 
 
