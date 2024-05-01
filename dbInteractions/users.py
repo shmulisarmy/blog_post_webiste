@@ -8,15 +8,29 @@ def createUser(username, password, salt, bio="this is an empty bio"):
     conn.close()
 
 
-def idAndBioIfCorrectPassword(username, password):
+def idAndBioIfCorrectPassword(username, hashedPassword):
     conn = sqlite3.connect('test.db')
     c = conn.cursor()
-    c.execute("SELECT id, bio FROM users WHERE username = ? AND password = ?", (username, password))
+    c.execute("SELECT id, bio FROM users WHERE username = ? AND password = ?", (username, hashedPassword))
     idAndBioTupple = c.fetchone()
     conn.close()
     return idAndBioTupple if idAndBioTupple else None
 
+def getSalt(username):
+    conn = sqlite3.connect('test.db')
+    c = conn.cursor()
+    c.execute("SELECT salt FROM users WHERE username = ?", (username,))
+    salt = c.fetchone()[0]
+    conn.close()
+    return salt
 
+def usernameExists(username) -> bool:
+    conn = sqlite3.connect('test.db')
+    c = conn.cursor()
+    c.execute("SELECT username FROM users WHERE username = ?", (username,))
+    usernameExists = c.fetchone()
+    conn.close()
+    return bool(usernameExists)
 
 
 

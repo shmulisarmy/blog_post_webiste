@@ -1,5 +1,9 @@
 import sqlite3
 
+
+
+db_name = "test.db"
+
 def getAllPosts():
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
@@ -44,15 +48,13 @@ def getPostById(id: int):
     return post
 
 
-def getPostByUserId(userId: int):
+def getPostsByUserId(userId: int) -> list[tuple]:
     print(f"getPost: {id}")
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
     c.execute("SELECT author, title, body FROM posts WHERE user_id = ?", (userId,))
-    post = c.fetchone()
+    posts = c.fetchall()
     conn.close()
-    print(f"{post = }")
-    return post
+    print(f"{posts = }")
+    return posts
 
-
-db_name = "test.db"

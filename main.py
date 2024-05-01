@@ -3,8 +3,8 @@ from flask import Flask, render_template, request, redirect, url_for, send_file,
 from website.utils import generateSalt, hash, isCommonPassword
 from colors import red, green
 
-from dbInteractions.posts import createPost, getPostById, getAllPosts, getPostByUserId
-from dbInteractions.users import createUser, idAndBioIfCorrectPassword, followUser, unfollowUser, getAllFollowers, getAllFollowing
+from dbInteractions.posts import createPost, getPostById, getAllPosts, getPostsByUserId, getPostsByUserId
+from dbInteractions.users import createUser, idAndBioIfCorrectPassword, followUser, unfollowUser, getAllFollowers, getAllFollowing, getSalt, usernameExists
 from search.load import postTitleToIdTree
 
 app = Flask(__name__)
@@ -28,7 +28,16 @@ def index(index: int):
 
 @app.route('/home')
 def home():
-    return render_template('home.html', blogs=getAllPosts(), bio=session.get('bio'), username=session.get('username'))
+    user_id = session.get('id')
+    username = session.get('username')
+    print(f"{user_id = } {username = }")
+
+    if not user_id:
+        return redirect(url_for('login'))
+    blogs = []
+    for usersId in getAllFollowing(user_id):
+        blogs += getPostsByUserId(usersId)
+    return render_template('home.html', blogs=blogs, bio=session.get('bio'), username=username)
 
 
 @app.route('/createBlog', methods=['GET', 'POST'])
@@ -80,6 +89,9 @@ def signup():
     if not username or not password:
         return redirect(url_for('signup'), message='Please fill in all fields')
     
+    if usernameExists(username):
+        return redirect(url_for('signup'), message='Username already exists')
+    
     if isCommonPassword(password):
         return redirect(url_for('signup'), message='Password is too common')
     
@@ -94,7 +106,12 @@ def signup():
     
     salt = generateSalt()
     saltedHash = hash(password, salt)
-    createUser(username, saltedHash, salt)
+    bio = 'hello how are you doing'
+    createUser(username, saltedHash, salt, bio)
+
+
+    session['username'] = username
+    session['bio'] = bio
 
     return render_template('home.html', message='Account created')
     
@@ -110,7 +127,11 @@ def login():
     if not username or not password:
         return render_template('login.html', message='Please fill in all fields')
     
-    IdandBio = idAndBioIfCorrectPassword(username, password)
+    salt = getSalt(username)
+
+    hashedPassword = hash(password, salt)
+
+    IdandBio = idAndBioIfCorrectPassword(username, hashedPassword)
 
     if not IdandBio:
         return render_template('login.html', message='wrong username or password')
@@ -135,7 +156,7 @@ def logout():
 def myPosts():
     if 'id' not in session:
         return redirect(url_for('login'))
-    return render_template('myPosts.html', username=session['username'], blogs=getPostByUserId(session['id']))
+    return render_template('myPosts.html', username=session['username'], blogs=getPostsByUserId(session['id']))
 
 
 
