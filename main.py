@@ -68,23 +68,6 @@ def createBlog():
     return redirect(url_for('home'))
 
 
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     if request.method == 'GET':
-#         return render_template('login.html')
-    
-#     username = request.form["username"]
-#     password = request.form["password"]
-    
-#     if not username or not password:
-#         flash('Please fill in all fields')
-#         return redirect(url_for('login'))
-    
-#     session['username'] = username
-#     return redirect(url_for('home'))
-
-
-
 @app.route('/myPosts')
 def myPosts():
     if 'id' not in session:
