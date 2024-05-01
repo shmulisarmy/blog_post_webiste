@@ -158,6 +158,10 @@
             render() {
                 const id = this.getAttribute('data-id');
                 const title = this.textContent
+                if (isNaN(parseInt(id))){
+                    this.innerHTML = `if you see this it means its a bug`;
+                    return;
+                }
                 this.innerHTML = `
                     <p onclick="goToBlog(${id})">${title}</p>
                 `;

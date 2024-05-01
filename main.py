@@ -172,7 +172,6 @@ def searchResults():
         print(f"{postTitleToIdTree = }")
     searchLetters = request.form.get('searchLetters')
     print(f"{searchLetters = }")
-    # searchResults = postTitleToIdTree.firstNThatStartWith(searchLetters, 5)
     searchResults = postTitleToIdTree.valueSearch(3, searchLetters)
     if searchResults:
         return render_template('searchResults.html', searchResults=searchResults)
