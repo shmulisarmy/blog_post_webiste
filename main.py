@@ -152,5 +152,17 @@ def searchResults():
     if searchResults:
         return render_template('searchResults.html', searchResults=searchResults)
 
+@app.route('/follow', methods=['POST'])
+def follow():
+    user_id = session.get('id')
+    follow_id = request.form.get('follow_id')
+    if user_id and follow_id:
+        #db func
+        followUser(user_id, follow_id)
+
+    return "success"
+
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=4040)
