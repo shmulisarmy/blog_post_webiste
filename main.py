@@ -35,8 +35,11 @@ def home():
     if not user_id:
         return redirect(url_for('login'))
     blogs = []
-    for usersId in getAllFollowing(user_id):
-        blogs += getPostsByUserId(usersId)
+    for usersId_intuples in getAllFollowing(user_id):
+        usersId = usersId_intuples[0]
+        print(f"following: {usersId = }")
+        for blog in getPostsByUserId(usersId):
+            blogs.append(blog)
     return render_template('home.html', blogs=blogs, bio=session.get('bio'), username=username)
 
 
@@ -156,6 +159,7 @@ def logout():
 def myPosts():
     if 'id' not in session:
         return redirect(url_for('login'))
+    print(f"{session['id'] = }")
     return render_template('myPosts.html', username=session['username'], blogs=getPostsByUserId(session['id']))
 
 
@@ -220,4 +224,5 @@ def following():
 
 
 if __name__ == '__main__':
+    print(f"go to {green('http://localhost:4040/home')}")
     app.run(debug=True, port=4040)
