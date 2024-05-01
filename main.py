@@ -7,8 +7,10 @@ from dbInteractions.posts import createPost, getPostById, getAllPosts, getPostsB
 from dbInteractions.users import createUser, idAndBioIfCorrectPassword, followUser, unfollowUser, getAllFollowers, getAllFollowing, getSalt, usernameExists
 from dbInteractions.likes import likeAPost, unlikeAPost, getAllLikedByUser, getAllUsersThatLikedPost
 from search.load import postTitleToIdTree
+from blueprints.accounts import accounts_blueprint
 
 app = Flask(__name__)
+app.register_blueprint(accounts_blueprint)
 app.secret_key = b'\x1b\x7f\x0b\xca\x1c\x9d\xa9\xbd\x8a\x1f\x9b\x1b\xcb\x1c\x9d\xa9\xbd\x8a\x1f\x9b'
 
 @app.route("/test", methods=['GET', 'POST'])
@@ -82,79 +84,6 @@ def createBlog():
 #     return redirect(url_for('home'))
 
 
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
-    if request.method == 'GET':
-        return render_template('signup.html')
-    
-    username = request.form["username"]
-    password = request.form["password"]
-
-    if not username or not password:
-        return redirect(url_for('signup'), message='Please fill in all fields')
-    
-    if usernameExists(username):
-        return redirect(url_for('signup'), message='Username already exists')
-    
-    if isCommonPassword(password):
-        return redirect(url_for('signup'), message='Password is too common')
-    
-    if len(password) < 8:
-        return redirect(url_for('signup'), message='Password is too short')
-    
-    if len(password) > 64:
-        return redirect(url_for('signup'), message='Password is too long')
-    
-    if len(username) > 64:
-        return redirect(url_for('signup'), message='Username is too long')
-    
-    salt = generateSalt()
-    saltedHash = hash(password, salt)
-    bio = 'hello how are you doing'
-    createUser(username, saltedHash, salt, bio)
-
-
-    session['username'] = username
-    session['bio'] = bio
-
-    return render_template('home.html', message='Account created')
-    
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    print(f"message: {session = }")
-    if request.method == 'GET':
-        return render_template('login.html')
-    
-    username = request.form["username"]
-    password = request.form["password"]
-    
-    if not username or not password:
-        return render_template('login.html', message='Please fill in all fields')
-    
-    salt = getSalt(username)
-
-    hashedPassword = hash(password, salt)
-
-    IdandBio = idAndBioIfCorrectPassword(username, hashedPassword)
-
-    if not IdandBio:
-        return render_template('login.html', message='wrong username or password')
-
-    Id, bio = IdandBio
-    
-    session['id'] = Id
-    session['bio'] = bio
-    session['username'] = username
-    
-
-    return redirect(url_for('home'))
-
-
-@app.route('/logout')  
-def logout():
-    session.pop('id', None)
-    session.pop('username', None)
-    return redirect(url_for('home'))
 
 @app.route('/myPosts')
 def myPosts():
