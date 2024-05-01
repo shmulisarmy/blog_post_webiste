@@ -52,7 +52,7 @@ def getPostsByUserId(userId: int) -> list[tuple]:
     print(f"getPost: {id}")
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
-    c.execute("SELECT title, summary, id FROM posts WHERE user_id = ?", (userId,))
+    c.execute("SELECT title, summary, id, user_id FROM posts WHERE user_id = ?", (userId,))
     posts = c.fetchall()
     conn.close()
     print(f"{posts = }")

@@ -1,7 +1,8 @@
 import logging.config
-from flask import Flask, render_template, request, redirect, url_for, send_file, session
+from flask import Flask, render_template, request, redirect, url_for, send_file, session, send_from_directory
 from website.utils import generateSalt, hash, isCommonPassword
 from colors import red, green
+from os import path
 
 from dbInteractions.posts import createPost, getPostById, getAllPosts, getPostsByUserId, getPostsByUserId, getPostsByIds
 from dbInteractions.users import createUser, idAndBioIfCorrectPassword, followUser, unfollowUser, getAllFollowers, getAllFollowing, getSalt, usernameExists
@@ -50,7 +51,6 @@ def home():
 def createBlog():
     id = session.get('id')
     if not id:
-        print(red(f""))
         return redirect(url_for('login'))
     
 
@@ -60,6 +60,9 @@ def createBlog():
     title = request.form['title']
     summary = request.form['summary']
     body = request.form['body']
+    image = request.files['image']
+    if image.filename != '':
+        image.save(f'images/posts/{image.filename}')
 
     if not title or not summary or not body:
         return redirect(url_for('createBlog'), message='Please fill in all fields')
@@ -172,6 +175,19 @@ def usersLikedPost(post_id):
     # return render_template('usersLikedPost.html', users_liked_post=users_liked_post)
 
 
+
+@app.route('/postImages/<int:post_id>', methods=['GET'])
+def postImages(post_id: int):
+    return send_from_directory('images/posts', f'{post_id}.jpg')
+    
+
+@app.route('/profileImages/<int:user_id>', methods=['GET'])
+def profileImages(user_id: int):
+    image_path = f'images/profiles/{user_id}.jpg'
+    if path.exists(image_path):
+        return send_from_directory('images/profiles', f'{user_id}.jpg')
+    return send_file('images/profiles', 'default.jpg')
+    
 
 
 
