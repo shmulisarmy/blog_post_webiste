@@ -1,7 +1,7 @@
 import sqlite3
 
 def getAllPosts():
-    conn = sqlite3.connect('test.db')
+    conn = sqlite3.connect(db_name)
     c = conn.cursor()
     c.execute("SELECT title, summary, id FROM posts")
     posts = c.fetchall()
@@ -12,7 +12,7 @@ def getAllPosts():
 
 def returnsTitleToIdDictOfAllPosts():
     """"used for loading into search tree"""
-    conn = sqlite3.connect('test.db')
+    conn = sqlite3.connect(db_name)
     c = conn.cursor()
     c.execute("SELECT title, id FROM posts")
     posts = c.fetchall()
@@ -26,7 +26,7 @@ TitleToIdDictOfAllPosts: dict = returnsTitleToIdDictOfAllPosts()
 
 
 def createPost(title, summary, body, authorId):
-    conn = sqlite3.connect('test.db')
+    conn = sqlite3.connect(db_name)
     c = conn.cursor()
     c.execute("INSERT INTO posts (user_id, title, summary, body) VALUES (?, ?, ?, ?)", (authorId, title, summary, body))
     conn.commit()
@@ -35,7 +35,7 @@ def createPost(title, summary, body, authorId):
 
 def getPostById(id: int):
     print(f"getPost: {id}")
-    conn = sqlite3.connect('test.db')
+    conn = sqlite3.connect(db_name)
     c = conn.cursor()
     c.execute("SELECT title, summary, body FROM posts WHERE id = ?", (id,))
     post = c.fetchone()
@@ -46,7 +46,7 @@ def getPostById(id: int):
 
 def getPostByUserId(userId: int):
     print(f"getPost: {id}")
-    conn = sqlite3.connect('test.db')
+    conn = sqlite3.connect(db_name)
     c = conn.cursor()
     c.execute("SELECT author, title, body FROM posts WHERE user_id = ?", (userId,))
     post = c.fetchone()
@@ -55,3 +55,4 @@ def getPostByUserId(userId: int):
     return post
 
 
+db_name = "test.db"

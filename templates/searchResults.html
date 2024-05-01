@@ -1,0 +1,5 @@
+{% for result in searchResults %}
+    <p onclick="goToBlog({{ searchResults[result] }})">{{ result }} (click to go to blog {{searchResults[result]}})</r>
+{% endfor %}
+
+
