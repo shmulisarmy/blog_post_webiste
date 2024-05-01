@@ -26,7 +26,7 @@ def test():
 def index(index: int):
     blog = getPostById(index)
     print(f"{blog = }")
-    return render_template('main.html', blog=blog)
+    return render_template('main.html', blog=blog, id=index)
 
 
 @app.route('/home')
@@ -138,6 +138,7 @@ def following():
 def likePost():
     user_id = session.get('id')
     post_id = request.form.get('post_id')
+    print(f"{user_id = } {post_id = }")
     if user_id and post_id:
         likeAPost(user_id, post_id)
 

@@ -28,6 +28,11 @@ main h1{
         <h1>{{blog[0]}}</h1>
         <h3>{{blog[1]}}</h3>
         <p>{{blog[2]}}</p>
+        <form action="/likePost" method="POST" hx-boost="true" hx-target="this">
+            <input type="hidden" name="post_id" value="{{id}}">
+            <button type="submit">Like</button>
+        </form>
+        <div id="responce"></div>
     </main>
     
 {% endblock %}

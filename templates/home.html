@@ -58,7 +58,7 @@
 
 
 
-<main>
+<main hx-boost="true">
     {% for blog in blogs %}
     <div class="blog">
         <div class="image">
@@ -67,6 +67,12 @@
         <h1>{{ blog[0] }}</h1>
         <h3>{{ blog[1] }}</h3>
         <button onclick="goToBlog({{ blog[2] }})">Read More</button>
+        <form action="/likePost" method="POST"  hx-target="this">
+            <input type="hidden" name="post_id" value="{{blog[2]}}">
+            <button type="submit">Like</button>
+        </form>
+        <div id="responce"></div>
+        
     </div>
     {% endfor %}
 </main>
